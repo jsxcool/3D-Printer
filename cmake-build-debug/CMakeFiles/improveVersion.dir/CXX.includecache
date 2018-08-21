@@ -1,0 +1,54 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/shangxingjiang/Desktop/Summer Project/improveVersion/FillingAlgorithm.hh
+SliceAlgorithm.hh
+/Users/shangxingjiang/Desktop/Summer Project/improveVersion/SliceAlgorithm.hh
+SliceAlgorithm.hh
+/Users/shangxingjiang/Desktop/Summer Project/improveVersion/SliceAlgorithm.hh
+
+/Users/shangxingjiang/Desktop/Summer Project/improveVersion/Gcode.hh
+SliceAlgorithm.hh
+/Users/shangxingjiang/Desktop/Summer Project/improveVersion/SliceAlgorithm.hh
+
+/Users/shangxingjiang/Desktop/Summer Project/improveVersion/Polyhedron.hh
+iostream
+-
+cmath
+-
+vector
+-
+
+/Users/shangxingjiang/Desktop/Summer Project/improveVersion/STL.hh
+fstream
+-
+sstream
+-
+iostream
+-
+Polyhedron.hh
+/Users/shangxingjiang/Desktop/Summer Project/improveVersion/Polyhedron.hh
+
+/Users/shangxingjiang/Desktop/Summer Project/improveVersion/SliceAlgorithm.hh
+STL.hh
+/Users/shangxingjiang/Desktop/Summer Project/improveVersion/STL.hh
+cmath
+-
+
+/Users/shangxingjiang/Desktop/Summer Project/improveVersion/main.cpp
+iostream
+-
+STL.hh
+/Users/shangxingjiang/Desktop/Summer Project/improveVersion/STL.hh
+SliceAlgorithm.hh
+/Users/shangxingjiang/Desktop/Summer Project/improveVersion/SliceAlgorithm.hh
+FillingAlgorithm.hh
+/Users/shangxingjiang/Desktop/Summer Project/improveVersion/FillingAlgorithm.hh
+Gcode.hh
+/Users/shangxingjiang/Desktop/Summer Project/improveVersion/Gcode.hh
+

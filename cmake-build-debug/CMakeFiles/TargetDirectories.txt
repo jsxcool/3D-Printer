@@ -1,0 +1,3 @@
+/Users/shangxingjiang/Desktop/Summer Project/improveVersion/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/shangxingjiang/Desktop/Summer Project/improveVersion/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/shangxingjiang/Desktop/Summer Project/improveVersion/cmake-build-debug/CMakeFiles/improveVersion.dir
