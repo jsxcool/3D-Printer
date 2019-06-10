@@ -1,0 +1,70 @@
+void outputGFill(const Boundary& b){
+        Vec3d* v = nullptr;
+        double x=0, y=0, z=0;
+        int index = 0;
+        for(int i=0; i<b.inter.size(); i++) {
+            //此if可能存在问题：最后一次x，我们不知道有几个填充线  !!!!
+            if (i==b.inter.size()-1 || i==b.inter.size()-2 ||
+                b.inter[i]->position1->x != b.inter[i+1]->position1->x ) {
+                v = b.inter[i]->position1;
+                if (i % 2 == 1)
+                    v = b.inter[i]->position2;
+                x = v->x;
+                y = v->y;
+                z = v->z;
+                G0(x, y, z);
+                G1(x, y, z);
+                v = b.inter[i]->position2;
+                if (i % 2 == 1)
+                    v = b.inter[i]->position1;
+                x = v->x;
+                y = v->y;
+                z = v->z;
+                G1(x, y, z);
+            }
+            else{
+                double tempX = b.inter[i]->position1->x;
+                if(index%2 == 0) {
+                    while (tempX == b.inter[i]->position1->x) {     // stuck here：i = b.inter.size()   34--38
+                        v = b.inter[i]->position1;
+                        x = v->x;
+                        y = v->y;
+                        z = v->z;
+                        G0(x, y, z);
+                        G1(x, y, z);
+                        v = b.inter[i]->position2;
+                        x = v->x;
+                        y = v->y;
+                        z = v->z;
+                        G1(x, y, z);
+                        i++;
+                    }
+                    index++;
+                }
+                else{
+                    int startNum = i;
+                    while (tempX == b.inter[i]->position1->x)     //stuck here
+                        i++;
+                    for(int j=i-1; j>= startNum; j--){
+                        v = b.inter[j]->position2;
+                        x = v->x;
+                        y = v->y;
+                        z = v->z;
+                        G0(x, y, z);
+                        G1(x, y, z);
+                        v = b.inter[j]->position1;
+                        x = v->x;
+                        y = v->y;
+                        z = v->z;
+                        G1(x, y, z);
+                    }
+                    index++;
+                }
+                i--;  //因为最后一次内部循环已经导致i多加了1
+            }
+
+        }
+    }
+
+
+
