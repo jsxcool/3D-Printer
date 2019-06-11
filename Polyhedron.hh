@@ -32,7 +32,8 @@ public:
             return 1;
     }
 
-    double static distance(Vec2d* v1, Vec2d* v2){   // shared by classes
+    // static: we can call this function without initializing a object
+    double static distance(Vec2d* v1, Vec2d* v2){
         return sqrt((v1->x - v2->x)*(v1->x - v2->x) + (v1->y - v2->y)*(v1->y - v2->y));
     }
 
@@ -106,19 +107,23 @@ public:
         }
     }
 
-    void optimize(){  //delete the middle point in one line
+    //delete the middle point in one line. (the line is on one layer)
+    void optimize(){
         Vec2d* start = head;
         for(; start->next != nullptr; start = start->next){
             Vec2d* next1 = start->next;
             Vec2d* next2 = next1->next;
             if(next2 == nullptr)
                 break;
+            // three points on the same line
             if(abs(Vec2d::distance(start, next2) - Vec2d::distance(start, next1) -
-                   Vec2d::distance(next1, next2)) < 0.001) {  // three points on the same line
+                   Vec2d::distance(next1, next2)) < 0.001) {
                 start->next = next2;
                 delete next1;
             }
         }
+
+        // the last point, head, head->next are one the same line
         if(abs(Vec2d::distance(start, head->next) - Vec2d::distance(start, head) -
                Vec2d::distance(head, head->next)) < 0.001){
             Vec2d* temp = head;

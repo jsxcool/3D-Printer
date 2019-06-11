@@ -5,8 +5,8 @@
 
 #include "SliceAlgorithm.hh"
 //the member we need to use：vector<Linkedlist> boundary
-//std::vector<Line*> line;          //convert the boundary to many lines
-//std::vector<Intersection*> inter; //与边界上两条边的两个交点
+//std::vector<Line> line;          //convert the boundary to many lines
+//std::vector<Intersection> inter; //two intersections with two sides of a triangle
 
 
 void Layer::generateLines(){  // 直接对boundary操作

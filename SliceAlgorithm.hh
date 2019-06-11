@@ -9,13 +9,12 @@ class Layer{
 private:
     STL myFile;
     double z;  // scanning line height
-    //其实可以全部用vec2d，最后转化成3d； 或者生成Gcode时，直接用z
-    std::vector<Intersection> intersection;   // 每个三角形的两个交点  (3d)
+    std::vector<Intersection> intersection;  // two intersections (Vec2d) with two sides of a triangle 
 
-    std::vector<Line> line;          //convert the boundary to many lines
+    std::vector<Line> line;          // convert the boundary to many lines
 public:
     std::vector<Linkedlist> boundary;
-    std::vector<Intersection> inter; //与边界上两条边的两个交点
+    std::vector<Intersection> inter; // 与边界上两条边的两个交点
 public:
     Layer(STL s, double z): myFile(s), z(z) {}
 
