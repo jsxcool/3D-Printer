@@ -9,7 +9,7 @@ class Layer{
 private:
     STL myFile;
     double z;  // scanning line height
-    std::vector<Intersection> intersection;  // two intersections (Vec2d) with two sides of a triangle 
+    std::vector<Intersection> intersection;  // two intersections (Vec2d) with two sides of a triangle
 
     std::vector<Line> line;          // convert the boundary to many lines
 public:
@@ -20,6 +20,7 @@ public:
 
     double getZ() const { return z;}
 
+    // knowing two vertexes of one side and height z, calculate the intersection coordinate
     Vec2d pointAsZ(Vec3d v1, Vec3d v2){   //知道某条线与切割线（切三角形）交点的z坐标，求交点的坐标
         double x1 = v1.x, y1= v1.y, z1 = v1.z;
         double x2 = v2.x, y2= v2.y, z2 = v2.z;
@@ -28,16 +29,16 @@ public:
 
     bool crossEdge(Vec3d v1, Vec3d v2){   //scanning line crosses an edge of a triangle
         if( std::min(v1.z, v2.z)< z && z < std::max(v1.z, v2.z) )
-            return 1;
-        return 0;
+            return true;
+        return false;
     }
 
     void findIntersections(){
         for(int i=0; i<myFile.triangle.size(); i++){
             Triangle tri = myFile.triangle[i];
-            Vec2d p1,  p2 ;  // initial: x=0, y=0, z=0
+            Vec2d p1,  p2 ;
 
-            if(crossEdge(tri.vertex1, tri.vertex2) && crossEdge(tri.vertex1, tri.vertex2)){
+            if(crossEdge(tri.vertex1, tri.vertex2) && crossEdge(tri.vertex1, tri.vertex3)){
                 p1 = pointAsZ(tri.vertex1, tri.vertex2);
                 p2 = pointAsZ(tri.vertex1, tri.vertex3);
             }
@@ -53,30 +54,34 @@ public:
             }
 
             if( z==tri.vertex1.z  || z==tri.vertex2.z  || z==tri.vertex3.z ){
+                // the whole triangle is on the z cross layer
                 if(tri.vertex1.z==tri.vertex2.z && tri.vertex1.z==tri.vertex3.z)  //如果三角形三点都在此Z平面上，略过
                     continue;
 
+              // one side is on the cross layer
                 if (z==tri.vertex1.z && z==tri.vertex2.z && z<tri.vertex3.z ){  //可能导致重复添加intersection
                     p1 = tri.vertex1.toVec2d();                                 // 故加了第三个 && 条件
                     p2 = tri.vertex2.toVec2d();
                 }
-                if (z==tri.vertex1.z && z==tri.vertex3.z && z<tri.vertex2.z){  //可能导致重复添加intersection
+                else if (z==tri.vertex1.z && z==tri.vertex3.z && z<tri.vertex2.z){  //可能导致重复添加intersection
                     p1 = tri.vertex1.toVec2d();
                     p2 = tri.vertex3.toVec2d();
                 }
-                if (z==tri.vertex2.z && z==tri.vertex3.z && z<tri.vertex1.z){  //可能导致重复添加intersection
+                else if (z==tri.vertex2.z && z==tri.vertex3.z && z<tri.vertex1.z){  //可能导致重复添加intersection
                     p1 = tri.vertex2.toVec2d();
                     p2 = tri.vertex3.toVec2d();
                 }
+
+              // one vertex is on the cross layer
                 if( z==tri.vertex1.z && crossEdge(tri.vertex2, tri.vertex3)){
                     p1 = tri.vertex1.toVec2d();
                     p2 = pointAsZ(tri.vertex2, tri.vertex3);
                 }
-                if( z==tri.vertex2.z && crossEdge(tri.vertex1, tri.vertex3)){
+                else if( z==tri.vertex2.z && crossEdge(tri.vertex1, tri.vertex3)){
                     p1 = tri.vertex2.toVec2d();
                     p2 = pointAsZ(tri.vertex1, tri.vertex3);
                 }
-                if( z==tri.vertex3.z && crossEdge(tri.vertex1, tri.vertex2)){
+                else if( z==tri.vertex3.z && crossEdge(tri.vertex1, tri.vertex2)){
                     p1 = tri.vertex3.toVec2d();
                     p2 = pointAsZ(tri.vertex1, tri.vertex2);
                 }
@@ -114,6 +119,7 @@ public:
             for (int i = 1; i < intersection.size(); i++) {
                 if (i != index) {
                     //进度必须很小，否则可能出问题
+                    // step must be small, otherwise may cause error
                     if (samePoint(intersection[i].position1, temp) ||
                             samePoint(intersection[i].position2, temp)) {
                         index = i;
@@ -136,6 +142,7 @@ public:
             }
 
             if(temp.completed == 1) {
+              // optimize: if three nodes are on the same line, delete the inner node
                 oneList.optimize();   // 优化：若三点共线，只取起止点
                 oneList.optimize();
                 oneList.optimize();  //3次optimize, 尽量减少LinkedList上点的数量, i.e. decrease the number of line
@@ -150,7 +157,9 @@ public:
                         }
                     }
                 }
+
                 // 问题：erase删了之后，vector<intersection*>的整个顺序立马全部变化, 故要自己设计erase的算法
+                // ***follow up: we could choose set<intersection>, erase is only O(1)
                 for(int i=0; i<eraseIndex.size(); i++){
                     intersection.erase(intersection.begin()+eraseIndex[i]);
                     for(int i=0; i<eraseIndex.size();i++)

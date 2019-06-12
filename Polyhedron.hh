@@ -20,16 +20,16 @@ public:
 
     bool operator ==(Vec2d right) const{
         if(x==right.x && y==right.y)
-            return 1;
+            return true;
         else
-            return 0;
+            return false;
     }
 
     bool operator !=(Vec2d right) const{
         if(abs(x-right.x)<threForSame2 && abs(y-right.y)<threForSame2 )
-            return 0;
+            return false;
         else
-            return 1;
+            return true;
     }
 
     // static: we can call this function without initializing a object

@@ -9,7 +9,8 @@
 //std::vector<Intersection> inter; //two intersections with two sides of a triangle
 
 
-void Layer::generateLines(){  // 直接对boundary操作
+// operate to std::vector<Linkedlist> boundary
+void Layer::generateLines(){
     for(int i=0; i<boundary.size(); i++){
         Linkedlist l = boundary[i];
         Vec2d* v = boundary[i].head;
@@ -19,6 +20,7 @@ void Layer::generateLines(){  // 直接对boundary操作
 }
 
 //排序line：（1）line按y ascending排；（2）相同y，按x ascending排；（line中的两个点取那个最小的点）
+// rule: (1) y ascending  (2) if same y, x ascending (only consider the smaller point in a line)
 bool sortRule(Line l1, Line l2){
     if(std::min(l1.lineHead.y, l1.lineTail.y) < std::min(l2.lineHead.y, l2.lineTail.y))
         return 1;
